@@ -6,10 +6,12 @@ RGB_MATRIX_EFFECT(HUE_BREATHING)
 // Hue Breathing - All LED's light up
 bool HUE_BREATHING(effect_params_t* params) {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
-    uint8_t  huedelta = 12;
+    //uint8_t  huedelta = 100;
     HSV      hsv      = rgb_matrix_config.hsv;
-    uint16_t time     = scale16by8(g_rgb_timer, rgb_matrix_config.speed / 8);
-    hsv.h             = hsv.h + scale8(abs8(sin8(time) - 128) * 2, huedelta);
+    uint16_t time     = scale16by8(g_rgb_timer, rgb_matrix_config.speed / 24);
+    hsv.h             = 155 - scale8(abs8(sin8(time) - 128) * 4, 155);
+    hsv.s = hsv.s - scale8(abs8(sin8(time) - 128) * 6, 255);
+
     RGB rgb           = hsv_to_rgb(hsv);
     for (uint8_t i = led_min; i < led_max; i++) {
         RGB_MATRIX_TEST_LED_FLAGS();

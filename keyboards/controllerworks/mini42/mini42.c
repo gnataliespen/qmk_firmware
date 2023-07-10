@@ -6,13 +6,14 @@
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master()) {
+  if (is_keyboard_master()) {
     return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
   }
   return rotation;
 }
 
-enum layers { BASE, BUTTON, MEDIA, NAV, MOUSE, SYM, NUM, FUN };
+//enum layers { BASE, BUTTON, MEDIA, NAV, MOUSE, SYM, NUM, FUN };
+enum layers { BASE, FN, NUM, NAV };
 
 void oled_render_layer_state(void) {
 
@@ -20,26 +21,26 @@ void oled_render_layer_state(void) {
   case BASE:
     oled_write("Base", false);
     break;
-  case BUTTON:
-    oled_write("Button", false);
-    break;
-  case MEDIA:
-    oled_write("Media", false);
-    break;
+ // case BUTTON:
+ //   oled_write("Button", false);
+ //   break;
+ // case MEDIA:
+ //   oled_write("Media", false);
+ //   break;
   case NAV:
-    oled_write("Navigation", false);
+    oled_write("Nav", false);
     break;
-  case MOUSE:
-    oled_write("Mouse", false);
-    break;
-  case SYM:
-    oled_write("Symbol", false);
-    break;
+ // case MOUSE:
+ //   oled_write("Mouse", false);
+ //   break;
+ // case SYM:
+ //   oled_write("Symbol", false);
+ //   break;
   case NUM:
-    oled_write("Number", false);
+    oled_write("Num", false);
     break;
-  case FUN:
-    oled_write("Function", false);
+  case FN:
+    oled_write("fn", false);
     break;
   }
 
@@ -102,7 +103,7 @@ void oled_render_logo(void) {
 }
 
 bool oled_task_user(void) {
-  if (is_keyboard_master()) {
+  if (!is_keyboard_master()) {
     render_anim_bongocat();
     oled_set_cursor(0, 0);
     oled_write_P(PSTR("WPM:"), false);
